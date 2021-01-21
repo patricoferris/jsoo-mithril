@@ -14,7 +14,7 @@ pre {
   padding: .5em;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 300px;
+  /* max-height: 450px; */
 }
 
 p code {

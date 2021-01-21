@@ -1,27 +1,54 @@
+[@@@part "0"]
+
 open Mithril
 open Fut.Result_syntax
 
-[@@@part "0"]
+module User = struct
+  type t = Jv.t
 
-(* See https://mithril.js.org/index.html#xhr *)
-let count_xhr =
-  let count = ref 0 in
-  let increment () =
-    let url = "http://rem-rest-api.herokuapp.com/api/tutorial/1" in
-    let body = Jv.obj [| ("count", Jv.of_int (!count + 1)) |] in
-    let opts = M.Request.opts ~method_:"PUT" ~body ~with_credentials:true url in
-    let+ data = M.Request.make opts in
-    Brr.Console.log [ data ];
-    count := Jv.get data "count" |> Jv.to_int
-  in
-  let attr = [| Attr.attr "onclick" (Jv.repr increment) |] |> Attr.v in
-  let view _ =
-    M.(v "button" ~attr ~children:(`String (string_of_int !count ^ " clicks")))
-  in
-  Component.v view
+  let first_name t = Jv.get t "firstName" |> Jv.to_string
+
+  let last_name t = Jv.get t "lastName" |> Jv.to_string
+
+  let id t = Jv.get t "id" |> Jv.to_int
+
+  let of_list = List.map (fun t -> first_name t ^ " " ^ last_name t)
+end
 
 [@@@part "1"]
 
+let users, add_user =
+  let (lst : User.t list ref) = ref [] in
+  let add_user t =
+    lst := List.sort (fun a b -> Int.compare (User.id a) (User.id b)) (t :: !lst)
+  in
+  (lst, add_user)
+
+[@@@part "2"]
+
+let user_xhr =
+  let fetch_users () =
+    let url = "http://rem-rest-api.herokuapp.com/api/users" in
+    let opts = M.Request.opts ~method_:"GET" ~with_credentials:true url in
+    let+ data = M.Request.make opts in
+    Jv.get data "data" |> Jv.to_list (fun x -> x) |> List.iter add_user
+  in
+  let attr = [| Attr.attr "onclick" (Jv.repr fetch_users) |] |> Attr.v in
+  let view _ =
+    M.v "div"
+      ~children:
+        (`Vnodes
+          [
+            M.(v "button" ~attr ~children:(`String "Get Users"));
+            M.(
+              v "p"
+                ~children:(`String (String.concat ", " (User.of_list !users))));
+          ])
+  in
+  Component.v view
+
+[@@@part "3"]
+
 let () =
   let body = Brr.(Document.body G.document) in
-  M.(mount body count_xhr)
+  M.(mount body user_xhr)

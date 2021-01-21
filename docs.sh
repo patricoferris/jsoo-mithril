@@ -22,3 +22,4 @@ copy_example counter-closure-component
 copy_example hello-world
 copy_example request-data-from-the-internet
 copy_example todo-stack
+copy_example markdown-editor

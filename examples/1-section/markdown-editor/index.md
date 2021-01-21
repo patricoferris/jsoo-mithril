@@ -8,6 +8,8 @@ toc: false
 resources: []
 ---
 
+[Try the editor now!](./example)
+
 The small markdown editor app is a good example of the power you can leverage by choosing to use `js_of_ocaml`. The app uses [omd](https://github.com/ocaml/omd), a pure OCaml markdown parser to take the user's markdown and render HTML.
 
 We first create some global state and a function to update that state.

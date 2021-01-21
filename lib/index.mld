@@ -1,0 +1,44 @@
+{1 jsoo-mithril}
+
+[jsoo-mithril] is a library that provides OCaml-style bindings for the minimal
+javascript framework {{: https://mithril.js.org/index.html} MithrilJS}. Your 
+code should feel like OCaml rather than Javascript with certain type properies 
+guranteed. The simplest example: 
+
+{[
+open Mithril
+open Brr
+
+let () =
+  let body = Document.body G.document in
+  let hello_world = M.(v "h1" ~children:(`String "Hello World!")) in
+  M.render body [ hello_world ]
+]}
+
+{2 Mithril Core Functionality}
+
+The [M] module contains the high-level {{:https://mithril.js.org/api.html}
+API} functionality of the framework. This includes the useful functions like
+{!Mithril.M.mount} and {!Mithril.M.route} for building your applications. 
+
+{2 Components For Modularity}
+
+Components are {{:https://mithril.js.org/components.html} the mechanisms to
+encapsulate views} -- ultimately they are Javascript objects with a
+{!Component.view} function
+
+{2 Attributes}
+
+Attributes are passed to {!Mithril.M.v} for constructing a {!Mithril.Vnode.t}
+
+{2 Routing}
+
+The {!Route} module provides functions and helpers for creating routes to be
+passed to the {!M.route} function to build multi-page apps in your
+single-page Mithril app.
+
+{2 Virtual DOM Nodes}
+
+{{:https://mithril.js.org/vnodes.html} Virtual DOM Nodes} or Vnodes make up
+the virtual DOM, the underlying data-structure that recalculates what needs
+rebuilding.

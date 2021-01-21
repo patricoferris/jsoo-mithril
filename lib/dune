@@ -1,0 +1,7 @@
+(library
+ (name mithril)
+ (public_name mithril)
+ (libraries brr))
+
+(documentation
+ (package mithril))

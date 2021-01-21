@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCaml x Mithril</title>
+  <script src="https://unpkg.com/mithril/mithril.js"></script>
+  <style>
+    @import url('https://rsms.me/inter/inter.css');
+
+    html {
+      font-family: 'Inter', sans-serif;
+      background-color: #121212;
+      color: #fffff7;
+    }
+
+    @supports (font-variation-settings: normal) {
+      html {
+        font-family: 'Inter var', sans-serif;
+        background-color: #121212;
+        color: #fffff7;
+      }
+    }
+
+    .main {
+      max-width: 650px;
+      margin: auto;
+      text-align: center;
+    }
+
+    div.completed {
+      text-decoration: line-through;
+    }
+
+    input#new-todo {
+      padding: 16px;
+      width: 100%;
+      border-bottom: medium solid rgba(240, 135, 5, 0.9);
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      font-size: 20px;
+    }
+
+    div.todo-list {
+      margin-top: 20px;
+    }
+
+    div.todo {
+      cursor: pointer;
+      font-size: 18px;
+      text-align: left;
+      padding: 16px;
+      border-bottom: thin dashed lightgray;
+      transition: all ease-in-out 200ms;
+    }
+
+    button {
+      font-family: "Inter", sans-serif;
+      padding: 8px;
+      margin: 8px;
+      font-size: 14px;
+      border: thin solid #fffff7;
+      background-color: #121212;
+      color: #fffff7;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="index.bc.js"></script>
+</body>
+
+</html>

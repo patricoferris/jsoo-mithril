@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+ <head><title>Counter closure component</title><meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description"
+   content="Make a simple counter where the state is managed by a closure"/>
+  <link rel="stylesheet" href="/styles.css"/>
+ </head>
+ <body>
+             
+  <div class="nav"><h1 class="title"><a href="/">jsoo-mithril</a></h1>
+   <ul>
+    <li><a href="/tutorial">Tutorial</a>
+     <ul><li><a href="/tutorial/hello-world">Hello World</a></li>
+      <li>
+       <a href="/tutorial/counter-closure-component">
+        Counter closure component
+       </a>
+      </li>
+      <li>
+       <a href="/tutorial/request-data-from-the-internet">
+        Request data from the internet
+       </a>
+      </li><li><a href="/tutorial/todo-stack">Todo Stack</a></li>
+     </ul>
+    </li>
+   </ul>
+  </div>
+  <div class="content">
+   <div class="meta"><h2>Counter closure component</h2>
+    <p> By Patrick Ferris on 2021-01-20 18:10:41 +00:00</p>
+   </div>
+   <p>Managing state can be challenging. The Mithril docs have <a href="https://mithril.js.org/components.html#state">a whole section devoted to component state</a>. In this small tutorial we'll build a simple, incremental counter using the &quot;closure component&quot;.</p>
+<h2 id="closures">Closures</h2>
+<p>Closures are like functions with some internal state -- or probably more precisely <a href="https://en.wikipedia.org/wiki/Closure_(computer_programming)">lexically scoped name binding</a>. In OCaml they appear all over the place thanks to first-class functions and their ease of creation thanks to let-bindings.</p>
+<pre><code><span class="ocaml-keyword">#</span><span class="ocaml-source"> </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">f</span><span class="ocaml-source"> </span><span class="ocaml-source">x</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> 
+</span><span class="ocaml-source">    </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">c</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-constant-numeric">1</span><span class="ocaml-source"> </span><span class="ocaml-keyword">in</span><span class="ocaml-source"> 
+</span><span class="ocaml-source">    </span><span class="ocaml-source">x</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">+</span><span class="ocaml-source"> </span><span class="ocaml-source">c</span><span class="ocaml-source"> 
+</span><span class="ocaml-keyword">val</span><span class="ocaml-source"> </span><span class="ocaml-source">f</span><span class="ocaml-source"> </span><span class="ocaml-keyword">:</span><span class="ocaml-source"> </span><span class="ocaml-support">int</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">-&gt;</span><span class="ocaml-source"> </span><span class="ocaml-support">int</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">&lt;</span><span class="ocaml-keyword">fun</span><span class="ocaml-keyword-operator">&gt;</span><span class="ocaml-source">
+</span><span class="ocaml-keyword">#</span><span class="ocaml-source"> </span><span class="ocaml-source">f</span><span class="ocaml-source"> </span><span class="ocaml-constant-numeric">10</span><span class="ocaml-source">
+</span><span class="ocaml-keyword-operator">-</span><span class="ocaml-source"> </span><span class="ocaml-keyword">:</span><span class="ocaml-source"> </span><span class="ocaml-support">int</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-constant-numeric">11</span><span class="ocaml-source">
+</span></code></pre><p>Here the local variable <code>c</code> is contained inside the function <code>f</code>. This &quot;state&quot; is private to the function. It's not very stateful thought, that's because in OCaml must value are immutable by default. You need to create a mutable reference in order to change a value like you would see in Javascript.</p>
+<pre><code><span class="ocaml-keyword">#</span><span class="ocaml-source"> </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">f</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">mut</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-source">ref</span><span class="ocaml-source"> </span><span class="ocaml-constant-numeric">0</span><span class="ocaml-source"> </span><span class="ocaml-keyword">in</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-keyword">fun</span><span class="ocaml-source"> </span><span class="ocaml-source">t</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">-&gt;</span><span class="ocaml-source">
+</span><span class="ocaml-source">    </span><span class="ocaml-source">mut</span><span class="ocaml-source"> </span><span class="ocaml-keyword">:</span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">!</span><span class="ocaml-source">mut</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">+</span><span class="ocaml-source"> </span><span class="ocaml-source">t</span><span class="ocaml-keyword">;</span><span class="ocaml-source">
+</span><span class="ocaml-source">    </span><span class="ocaml-keyword-operator">!</span><span class="ocaml-source">mut</span><span class="ocaml-source">
+</span><span class="ocaml-keyword">val</span><span class="ocaml-source"> </span><span class="ocaml-source">f</span><span class="ocaml-source"> </span><span class="ocaml-keyword">:</span><span class="ocaml-source"> </span><span class="ocaml-support">int</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">-&gt;</span><span class="ocaml-source"> </span><span class="ocaml-support">int</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">&lt;</span><span class="ocaml-keyword">fun</span><span class="ocaml-keyword-operator">&gt;</span><span class="ocaml-source">
+</span><span class="ocaml-keyword">#</span><span class="ocaml-source"> </span><span class="ocaml-source">f</span><span class="ocaml-source"> </span><span class="ocaml-constant-numeric">1</span><span class="ocaml-source"> 
+</span><span class="ocaml-keyword-operator">-</span><span class="ocaml-source"> </span><span class="ocaml-keyword">:</span><span class="ocaml-source"> </span><span class="ocaml-support">int</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-constant-numeric">1</span><span class="ocaml-source">
+</span><span class="ocaml-keyword">#</span><span class="ocaml-source"> </span><span class="ocaml-source">f</span><span class="ocaml-source"> </span><span class="ocaml-constant-numeric">1</span><span class="ocaml-source">
+</span><span class="ocaml-keyword-operator">-</span><span class="ocaml-source"> </span><span class="ocaml-keyword">:</span><span class="ocaml-source"> </span><span class="ocaml-support">int</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-constant-numeric">2</span><span class="ocaml-source">
+</span></code></pre><p>It's important to notice the declaration of the <code>int ref</code> is before the function. The reference (<code>mut</code>) is now lexically scoped inside of <code>f</code> and is what the function body refers to. You will also notice are function is no longer pure! It has side-effects. Closure components can be thought of as value like <code>f</code> but that return a component.</p>
+<h2 id="the-counter">The Counter</h2>
+<p>The <a href="./example">running example can be found here</a>.</p>
+<p>First things first, this isn't JS so let's make some types to represent our state.</p>
+<!-- $MDX file=./example/index.ml,part=0 -->
+<pre><code><span class="ocaml-keyword">type</span><span class="ocaml-source"> </span><span class="ocaml-source">counter</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> { </span><span class="ocaml-keyword">mutable</span><span class="ocaml-source"> </span><span class="ocaml-source">counter</span><span class="ocaml-source"> </span><span class="ocaml-keyword">:</span><span class="ocaml-source"> </span><span class="ocaml-support">int</span><span class="ocaml-source"> }
+</span></code></pre><p>The counter is a record with a mutable field called... <strong>counter</strong>. We're nearly done! All we have to do now is define our component with the state &quot;stored&quot; in it as a closure.</p>
+<!-- $MDX file=./example/index.ml,part=1 -->
+<pre><code><span class="ocaml-source">let </span><span class="ocaml-entity-name">count</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">state</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> { </span><span class="ocaml-source">counter</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-constant-numeric">0</span><span class="ocaml-source"> } </span><span class="ocaml-keyword">in</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">increment</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">()</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-source">state</span><span class="ocaml-keyword">.</span><span class="ocaml-source">counter</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">&lt;-</span><span class="ocaml-source"> </span><span class="ocaml-source">state</span><span class="ocaml-keyword">.</span><span class="ocaml-source">counter</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">+</span><span class="ocaml-source"> </span><span class="ocaml-constant-numeric">1</span><span class="ocaml-source"> </span><span class="ocaml-keyword">in</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">on_click</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">Attr</span><span class="ocaml-keyword">.</span><span class="ocaml-source">attr</span><span class="ocaml-source"> </span><span class="ocaml-string-quoted">&quot;</span><span class="ocaml-string-quoted">onclick</span><span class="ocaml-string-quoted">&quot;</span><span class="ocaml-source"> </span><span class="ocaml-source">(</span><span class="ocaml-constant-language">Jv</span><span class="ocaml-keyword">.</span><span class="ocaml-source">repr</span><span class="ocaml-source"> </span><span class="ocaml-source">increment</span><span class="ocaml-source">)</span><span class="ocaml-source"> </span><span class="ocaml-keyword">in</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">attr</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">Attr</span><span class="ocaml-keyword">.</span><span class="ocaml-source">v</span><span class="ocaml-source"> </span><span class="ocaml-source">[|</span><span class="ocaml-source"> </span><span class="ocaml-source">on_click</span><span class="ocaml-source"> </span><span class="ocaml-source">|]</span><span class="ocaml-source"> </span><span class="ocaml-keyword">in</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">view</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">_</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source">
+</span><span class="ocaml-source">    </span><span class="ocaml-constant-language">M</span><span class="ocaml-keyword">.</span><span class="ocaml-source">(</span><span class="ocaml-source">
+</span><span class="ocaml-source">      </span><span class="ocaml-source">v</span><span class="ocaml-source"> </span><span class="ocaml-string-quoted">&quot;</span><span class="ocaml-string-quoted">button</span><span class="ocaml-string-quoted">&quot;</span><span class="ocaml-source"> ~</span><span class="ocaml-source">attr</span><span class="ocaml-source">
+</span><span class="ocaml-source">        ~</span><span class="ocaml-source">children</span><span class="ocaml-keyword">:</span><span class="ocaml-source">(</span><span class="ocaml-constant-language">`String</span><span class="ocaml-source"> </span><span class="ocaml-source">(</span><span class="ocaml-source">string_of_int</span><span class="ocaml-source"> </span><span class="ocaml-source">state</span><span class="ocaml-keyword">.</span><span class="ocaml-source">counter</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">^</span><span class="ocaml-source"> </span><span class="ocaml-string-quoted">&quot;</span><span class="ocaml-string-quoted"> clicks</span><span class="ocaml-string-quoted">&quot;</span><span class="ocaml-source">)</span><span class="ocaml-source">)</span><span class="ocaml-source">)</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-keyword">in</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-constant-language">Component</span><span class="ocaml-keyword">.</span><span class="ocaml-source">v</span><span class="ocaml-source"> </span><span class="ocaml-source">view</span><span class="ocaml-source">
+</span></code></pre><p>The first line after <code>let count</code> initialises our state to <code>0</code>. Then we define our increment function. This is going to allow us to update the state which in turn (because it will be called on an event) will trigger Mithril to redraw our DOM. The <code>increment</code> function changes our state.</p>
+<p>We then form the function we want to run in the &quot;execution context of an event handler defined in a Mithril view&quot; (<a href="https://mithril.js.org/redraw.html">which triggers a redraw</a>). We build this using the <code>Attr</code> module which under the hood is just build a Javascript object. Something like:</p>
+<pre><code>let attr = {
+  onclick: () =&gt; state.counter += 1
+}
+</code></pre>
+<p>The last thing we do is create the <code>view</code> function which is defined to be a <code>Vnode.t -&gt; Vnode.t</code> but we don't care about the first argument so we safely ignore it. We create our component using <code>M.v</code> as a &quot;button&quot; passing in our <code>attr</code> value and rendering a <code> `String</code> as the child which uses the state to display the counter.</p>
+<!-- $MDX file=./example/index.ml,part=2 -->
+<pre><code><span class="ocaml-keyword">let</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">()</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">body</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">Brr</span><span class="ocaml-keyword">.</span><span class="ocaml-source">(</span><span class="ocaml-constant-language">Document</span><span class="ocaml-keyword">.</span><span class="ocaml-source">body</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">G</span><span class="ocaml-keyword">.</span><span class="ocaml-source">document</span><span class="ocaml-source">)</span><span class="ocaml-source"> </span><span class="ocaml-keyword">in</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-constant-language">M</span><span class="ocaml-keyword">.</span><span class="ocaml-source">(</span><span class="ocaml-source">mount</span><span class="ocaml-source"> </span><span class="ocaml-source">body</span><span class="ocaml-source"> </span><span class="ocaml-source">count</span><span class="ocaml-source">)</span><span class="ocaml-source">
+</span></code></pre><p>Last but certainly not least we <code>mount</code> the <code>count</code> component to the <code>body</code>. It's important to <code>mount</code> it rather than <code>render</code> it as we want it to update!</p>
+
+   <ol></ol>
+  </div>
+            
+            
+          
+ </body>
+</html>

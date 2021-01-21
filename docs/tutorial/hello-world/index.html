@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+ <head><title>Hello World</title><meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="The simplest app possible"/>
+  <link rel="stylesheet" href="/styles.css"/>
+ </head>
+ <body>
+             
+  <div class="nav"><h1 class="title"><a href="/">jsoo-mithril</a></h1>
+   <ul>
+    <li><a href="/tutorial">Tutorial</a>
+     <ul><li><a href="/tutorial/hello-world">Hello World</a></li>
+      <li>
+       <a href="/tutorial/counter-closure-component">
+        Counter closure component
+       </a>
+      </li>
+      <li>
+       <a href="/tutorial/request-data-from-the-internet">
+        Request data from the internet
+       </a>
+      </li><li><a href="/tutorial/todo-stack">Todo Stack</a></li>
+     </ul>
+    </li>
+   </ul>
+  </div>
+  <div class="content">
+   <div class="meta"><h2>Hello World</h2>
+    <p> By Patrick Ferris on 2021-01-20 18:09:15 +00:00</p>
+   </div>
+   <p>&quot;Hello World&quot; is meant to showcase software using the simplest example possible. For JS frameworks this simply means generating the text <code>hello world</code> in your browser. Let's have a look:</p>
+<!-- $MDX file=./example/index.ml -->
+<pre><code><span class="ocaml-keyword">open</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">Mithril</span><span class="ocaml-source">
+</span><span class="ocaml-keyword">open</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">Brr</span><span class="ocaml-source">
+</span><span class="ocaml-source">
+</span><span class="ocaml-keyword">let</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">()</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">body</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">Document</span><span class="ocaml-keyword">.</span><span class="ocaml-source">body</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">G</span><span class="ocaml-keyword">.</span><span class="ocaml-source">document</span><span class="ocaml-source"> </span><span class="ocaml-keyword">in</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-source">let </span><span class="ocaml-entity-name">hello_world</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">M</span><span class="ocaml-keyword">.</span><span class="ocaml-source">(</span><span class="ocaml-source">v</span><span class="ocaml-source"> </span><span class="ocaml-string-quoted">&quot;</span><span class="ocaml-string-quoted">h1</span><span class="ocaml-string-quoted">&quot;</span><span class="ocaml-source"> ~</span><span class="ocaml-source">children</span><span class="ocaml-keyword">:</span><span class="ocaml-source">(</span><span class="ocaml-constant-language">`String</span><span class="ocaml-source"> </span><span class="ocaml-string-quoted">&quot;</span><span class="ocaml-string-quoted">Hello World!</span><span class="ocaml-string-quoted">&quot;</span><span class="ocaml-source">)</span><span class="ocaml-source">)</span><span class="ocaml-source"> </span><span class="ocaml-keyword">in</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-constant-language">M</span><span class="ocaml-keyword">.</span><span class="ocaml-source">render</span><span class="ocaml-source"> </span><span class="ocaml-source">body</span><span class="ocaml-source"> </span><span class="ocaml-source">[</span><span class="ocaml-source"> </span><span class="ocaml-source">hello_world</span><span class="ocaml-source"> </span><span class="ocaml-source">]</span><span class="ocaml-source">
+</span></code></pre><p><a href="./example">The Hello World example is running here</a>.</p>
+<p>First we open <code>Mithril</code> and <code>Brr</code> to expose those modules so we don't have to write long things like <code>Brr.Document.body</code>.</p>
+<p>Then we have our <strong>main</strong> function. It uses the built-in functionality of <code>Brr</code> to get the body element of the DOM. Next we use two Mithril functions.</p>
+<!-- $MDX version<4.06 -->
+<pre><code><span class="ocaml-keyword">val</span><span class="ocaml-source"> </span><span class="ocaml-source">v</span><span class="ocaml-source"> </span><span class="ocaml-keyword">:</span><span class="ocaml-source"> ?⁠</span><span class="ocaml-source">attr</span><span class="ocaml-keyword">:</span><span class="ocaml-constant-language">Attr</span><span class="ocaml-keyword">.</span><span class="ocaml-source">t</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">-&gt;</span><span class="ocaml-source"> ?⁠</span><span class="ocaml-source">children</span><span class="ocaml-keyword">:</span><span class="ocaml-constant-language">Children</span><span class="ocaml-keyword">.</span><span class="ocaml-source">t</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">-&gt;</span><span class="ocaml-source"> </span><span class="ocaml-support">string</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">-&gt;</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">Vnode</span><span class="ocaml-keyword">.</span><span class="ocaml-source">t</span><span class="ocaml-source">
+</span><span class="ocaml-keyword">val</span><span class="ocaml-source"> </span><span class="ocaml-source">render</span><span class="ocaml-source"> </span><span class="ocaml-keyword">:</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">Brr</span><span class="ocaml-keyword">.</span><span class="ocaml-constant-language">El</span><span class="ocaml-keyword">.</span><span class="ocaml-source">t</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">-&gt;</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">Vnode</span><span class="ocaml-keyword">.</span><span class="ocaml-source">t</span><span class="ocaml-source"> </span><span class="ocaml-source">list</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">-&gt;</span><span class="ocaml-source"> </span><span class="ocaml-support">unit</span><span class="ocaml-source">
+</span></code></pre><p>From their signatures we can see <code>v</code> needs only a <code>string</code> but with some optional arguments. This is the <code>m()</code> function of Mithril. The string is the <em>CSS selector</em> and in the &quot;Hello World&quot; example it is an <code>h1</code> tag.</p>
+<p>The optional <code>children</code> parameter takes a <code>Children.t</code> which is:</p>
+<!-- $MDX version<4.06 -->
+<pre><code><span class="ocaml-keyword">type</span><span class="ocaml-source"> </span><span class="ocaml-source">t</span><span class="ocaml-source"> </span><span class="ocaml-keyword-operator">=</span><span class="ocaml-source"> </span><span class="ocaml-source">[</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-keyword">|</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">`Vnodes</span><span class="ocaml-source"> </span><span class="ocaml-keyword">of</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">Vnode</span><span class="ocaml-keyword">.</span><span class="ocaml-source">t</span><span class="ocaml-source"> </span><span class="ocaml-source">list</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-keyword">|</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">`String</span><span class="ocaml-source"> </span><span class="ocaml-keyword">of</span><span class="ocaml-source"> </span><span class="ocaml-support">string</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-keyword">|</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">`Number</span><span class="ocaml-source"> </span><span class="ocaml-keyword">of</span><span class="ocaml-source"> </span><span class="ocaml-support">float</span><span class="ocaml-source">
+</span><span class="ocaml-source">  </span><span class="ocaml-keyword">|</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">`Bool</span><span class="ocaml-source"> </span><span class="ocaml-keyword">of</span><span class="ocaml-source"> </span><span class="ocaml-support">bool</span><span class="ocaml-source">
+</span><span class="ocaml-source">]</span><span class="ocaml-source">
+</span></code></pre><p>This function returns a virtual DOM node (<code>Vnode.t</code>) which is exactly what the <code>render</code> function needs (well a list of them to be precise). It also needs a place to render them, which is described by a <code>Brr.El.t</code> (a DOM element).</p>
+
+   <ol></ol>
+  </div>
+            
+            
+          
+ </body>
+</html>

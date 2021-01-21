@@ -50,3 +50,33 @@ type t = [
 
 This function returns a virtual DOM node (`Vnode.t`) which is exactly what the `render` function needs (well a list of them to be precise). It also needs a place to render them, which is described by a `Brr.El.t` (a DOM element).
 
+This is all compiled with the following dune file. 
+
+<!-- $MDX file=./example/dune -->
+```
+(executable
+ (name index)
+ (modes js)
+ (libraries brr js_of_ocaml mithril))
+```
+
+And an HTML page that brings in the Mithril library. 
+
+<!-- $MDX file=./example/index.html -->
+```
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCaml x Mithril</title>
+  <script src="https://unpkg.com/mithril/mithril.js"></script>
+</head>
+
+<body>
+  <script src="index.bc.js"></script>
+</body>
+
+</html>
+```

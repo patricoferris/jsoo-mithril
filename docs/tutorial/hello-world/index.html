@@ -56,6 +56,31 @@
 </span><span class="ocaml-source">  </span><span class="ocaml-keyword">|</span><span class="ocaml-source"> </span><span class="ocaml-constant-language">`Bool</span><span class="ocaml-source"> </span><span class="ocaml-keyword">of</span><span class="ocaml-source"> </span><span class="ocaml-support">bool</span><span class="ocaml-source">
 </span><span class="ocaml-source">]</span><span class="ocaml-source">
 </span></code></pre><p>This function returns a virtual DOM node (<code>Vnode.t</code>) which is exactly what the <code>render</code> function needs (well a list of them to be precise). It also needs a place to render them, which is described by a <code>Brr.El.t</code> (a DOM element).</p>
+<p>This is all compiled with the following dune file.</p>
+<!-- $MDX file=./example/dune -->
+<pre><code>(executable
+ (name index)
+ (modes js)
+ (libraries brr js_of_ocaml mithril))
+</code></pre>
+<p>And an HTML page that brings in the Mithril library.</p>
+<!-- $MDX file=./example/index.html -->
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;OCaml x Mithril&lt;/title&gt;
+  &lt;script src=&quot;https://unpkg.com/mithril/mithril.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;script src=&quot;index.bc.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
 
    <ol></ol>
   </div>

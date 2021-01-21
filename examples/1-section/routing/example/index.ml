@@ -1,6 +1,6 @@
 open Mithril
 
-(* Example expanded on https://mithril.js.org/route.html *)
+[@@@part "0"]
 
 let home =
   let view _ =
@@ -16,9 +16,13 @@ let home =
   in
   Component.v view
 
+[@@@part "1"]
+
 let page_two =
   let view _ = M.(v "div" ~children:(`String "Page Two!")) in
   Component.v view
+
+[@@@part "2"]
 
 let () =
   let body = Brr.(Document.body G.document) in

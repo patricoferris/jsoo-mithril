@@ -1,10 +1,14 @@
 open Mithril
 open Brr
 
+[@@@part "0"]
+
 let markdown, update =
   let content = ref "" in
   let update t = content := t in
   (content, update)
+
+[@@@part "1"]
 
 let markdown_viewer =
   let view _ =
@@ -12,6 +16,8 @@ let markdown_viewer =
       ~children:(`Vnodes [ M.trust Omd.(of_string !markdown |> to_html) ])
   in
   Component.v view
+
+[@@@part "2"]
 
 let text_editor =
   let key_press e =
@@ -33,6 +39,8 @@ let text_editor =
   let view _ = M.v ~attr "div.text-editor" in
   Component.v view
 
+[@@@part "3"]
+
 let main =
   let title = M.(v "h1.title" ~children:(`String "Omd-itor")) in
   let view _ =
@@ -44,6 +52,8 @@ let main =
     M.(v "div.content" ~children:(`Vnodes [ title; body ]))
   in
   Component.v view
+
+[@@@part "4"]
 
 let () =
   let body = Document.body G.document in

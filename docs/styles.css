@@ -112,6 +112,37 @@ blockquote {
   border-bottom: solid rgba(255, 165, 0, 0.4);
 }
 
+.menu-toggle {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .menu-toggle {
+    position: fixed;
+    display: block;
+    top: 0px;
+    right: 0px;
+    background: #f6f8fa;
+    padding: 1em;
+    overflow: auto;
+    color: #1F2D3D;
+    padding-left: 2ex;
+    padding-right: 2ex;
+  }
+
+  .nav {
+    left: -40ex;
+  }
+
+  .nav-out {
+    left: 0px;
+  }
+
+  .content {
+    margin-left: 4ex;
+  }
+}
+
 /* Syntax Highlighting */
 span[class*='keyword'] {
   color: #ffaca3
